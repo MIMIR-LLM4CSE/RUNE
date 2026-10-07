@@ -51,7 +51,7 @@ Two invariants cut across all tiers:
 6. **Document** the measurement (numbers, replicates, spread, hardware,
    toolchain) in the shipped artifact.
 
-The full methodology is the skill body: [`skills/rune/SKILL.md`](skills/rune/SKILL.md).
+The full methodology is the skill body: [`.mimir/skills/rune/SKILL.md`](.mimir/skills/rune/SKILL.md).
 The tier decision tree and gate definitions: [`docs/architecture.md`](docs/architecture.md).
 A complete worked engagement (production seismic wave-propagation kernels
 on V100, from occupancy tuning to a SASS-guided sweep to a CI-integration
@@ -60,12 +60,13 @@ loop): [`docs/example-v100-case.md`](docs/example-v100-case.md).
 ## Installing
 
 RUNE is a MIMIR **skill** (see MIMIR's
-[plugin guide](mimir/PLUGINS_DETAILED.md)). Copy or symlink the skill
-directory into your workspace:
+[plugin guide](mimir/PLUGINS_DETAILED.md)). The repo tree is already the
+MIMIR drop-in layout, so installing is a single copy or symlink of the
+skill directory into your workspace:
 
 ```sh
-git clone --recurse-submodules https://github.com/sframba/RUNE.git
-ln -s "$(pwd)/RUNE/skills/rune"  <your-workspace>/.mimir/skills/rune
+git clone --recurse-submodules https://github.com/MIMIR-LLM4CSE/RUNE.git
+ln -s "$(pwd)/RUNE/.mimir/skills/rune"  <your-workspace>/.mimir/skills/rune
 ```
 
 Then invoke it explicitly (`/rune <goal>`) or let MIMIR's classifier detect
@@ -78,10 +79,10 @@ first — step 1 exists for that case).
 ## Repository layout
 
 ```
-skills/rune/SKILL.md   # the MIMIR skill (methodology, tiers, workflow)
-docs/architecture.md   # tier decision tree, gates, backport acceptance rule
-docs/example-v100-case.md # worked example: CUDA/V100, bit-exact, CI-integrated
-mimir/                 # MIMIR, pinned as a git submodule (see .gitmodules)
+.mimir/skills/rune/SKILL.md   # the MIMIR skill (methodology, tiers, workflow)
+docs/architecture.md         # tier decision tree, gates, backport acceptance rule
+docs/example-v100-case.md    # worked example: CUDA/V100, bit-exact, CI-integrated
+mimir/                       # MIMIR, pinned as a git submodule (see .gitmodules)
 ```
 
 ## Status and provenance

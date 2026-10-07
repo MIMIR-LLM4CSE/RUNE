@@ -1,7 +1,7 @@
 # RUNE architecture: tiers, gates, and the backport rule
 
 This document defines the decision structure behind
-[`skills/rune/SKILL.md`](../skills/rune/SKILL.md). It is deliberately
+[`.mimir/skills/rune/SKILL.md`](../.mimir/skills/rune/SKILL.md). It is deliberately
 architecture-neutral: every concrete tool name lives in the project's own
 config or in a case study.
 

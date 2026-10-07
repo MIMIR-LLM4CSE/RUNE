@@ -1,6 +1,6 @@
 ---
 name: rune
-description: Machine-code-level auto-tuning (RUNE): bit-exact optimization by editing SASS/ASM directly, with backport to language code when it costs nothing; proxy-ratchet measurement.
+description: Make existing code run faster on target hardware (GPU/CPU) while keeping results bit-identical — performance-tune kernels, dump and edit disassembly/assembly, backport machine-level wins to source, or sweep code-generation knobs; measured through a benchmark/proxy suite.
 ---
 
 Objective: auto-tune the target code by treating **machine code as the primary
