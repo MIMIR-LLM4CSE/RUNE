@@ -1,0 +1,3 @@
+[submodule "mimir"]
+	path = mimir
+	url = https://github.com/MIMIR-LLM4CSE/MIMIR.git
