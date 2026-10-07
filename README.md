@@ -59,30 +59,38 @@ loop): [`docs/example-v100-case.md`](docs/example-v100-case.md).
 
 ## Installing
 
-RUNE is a MIMIR **skill** (see MIMIR's
+RUNE is a MIMIR extension pack (see MIMIR's
 [plugin guide](mimir/PLUGINS_DETAILED.md)). The repo tree is already the
-MIMIR drop-in layout, so installing is a single copy or symlink of the
-skill directory into your workspace:
+MIMIR drop-in layout — install the components you want by copying or
+symlinking them into your workspace:
 
 ```sh
 git clone --recurse-submodules https://github.com/MIMIR-LLM4CSE/RUNE.git
-ln -s "$(pwd)/RUNE/.mimir/skills/rune"  <your-workspace>/.mimir/skills/rune
+ln -s "$(pwd)/RUNE/.mimir/skills/rune"   <your-workspace>/.mimir/skills/rune
+ln -s "$(pwd)/RUNE/.mimir/servers/server_rune.py"  <your-workspace>/.mimir/servers/
+ln -s "$(pwd)/RUNE/.mimir/plugins/rune_nudges.py"  <your-workspace>/.mimir/plugins/
 ```
 
-Then invoke it explicitly (`/rune <goal>`) or let MIMIR's classifier detect
-an auto-tuning task. The skill is architecture-neutral: it names no tools.
-Before a first run, give the project a config that names, for your platform:
-the build command, the machine-code dump/disassemble/assemble pair, the
-profiler, and the proxy suite runner (or ask MIMIR to build the proxy suite
-first — step 1 exists for that case).
+Then invoke the skill explicitly (`/rune <goal>`) or let MIMIR's classifier
+detect an auto-tuning task. The server's tools (`rune_seal`, `rune_gate`,
+`rune_mark`, `rune_dump`, `rune_assemble`, `rune_ledger`) become available as
+the `rune` namespace, and the nudges fire by themselves. The tools are
+**config-driven and architecture-neutral**: they run whatever the target
+project's `rune.json` names (build command, suite runner, dump/assemble
+pair) — schema and an example in [`docs/rune-config.md`](docs/rune-config.md).
+If the project has no suite yet, build one first (or ask RUNE to); the skill's
+step 1 exists for that case.
 
 ## Repository layout
 
 ```
-.mimir/skills/rune/SKILL.md   # the MIMIR skill (methodology, tiers, workflow)
-docs/architecture.md         # tier decision tree, gates, backport acceptance rule
-docs/example-v100-case.md    # worked example: CUDA/V100, bit-exact, CI-integrated
-mimir/                       # MIMIR, pinned as a git submodule (see .gitmodules)
+.mimir/skills/rune/SKILL.md   # the MIMIR skill: methodology, tiers, workflow
+.mimir/servers/server_rune.py # MCP server: the sanctioned measurement path as tools
+.mimir/plugins/rune_nudges.py # nudges: backport-owed and rejection-record reminders
+docs/architecture.md          # tier decision tree, gates, backport acceptance rule
+docs/rune-config.md           # the rune.json schema + example
+docs/example-v100-case.md     # worked example: CUDA/V100, bit-exact, CI-integrated
+mimir/                        # MIMIR, pinned as a git submodule (see .gitmodules)
 ```
 
 ## Status and provenance

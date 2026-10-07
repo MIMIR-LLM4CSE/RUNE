@@ -5,6 +5,27 @@ This document defines the decision structure behind
 architecture-neutral: every concrete tool name lives in the project's own
 config or in a case study.
 
+## Component map
+
+RUNE ships as a MIMIR extension pack; each component carries one kind of
+rule, and the kind decides the extension type:
+
+| Component | Carries | MIMIR extension |
+|---|---|---|
+| The doctrine & tier methodology | how to work | skill (`.mimir/skills/rune/SKILL.md`) |
+| The sanctioned measurement path | infrastructure | MCP server (`.mimir/servers/server_rune.py`) |
+| The advisory habits (backport owed, rejection record) | reminders | nudges (`.mimir/plugins/rune_nudges.py`) |
+| Hard invariants (planned) | must-hold rules | policies — deferred until the server's run-lock gives a policy something to key on |
+
+Division of labor inside the measurement path: the **server measures, the
+agent judges**. `rune_gate` returns bit-exactness, medians, spill totals and
+the delta vs the incumbent; acceptance is the agent's decision, recorded with
+`rune_mark` and reported through the client's normal verdict path — no RUNE
+tool declares the verdict capability. The server is config-driven
+(`rune.json`, see [rune-config.md](rune-config.md)): it names no commands
+itself, so the same pack serves any architecture whose project can name its
+own build, suite, dump and assemble commands.
+
 ## The optimization surface
 
 RUNE treats the compiled artifact as editable source:

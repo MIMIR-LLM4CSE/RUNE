@@ -87,18 +87,29 @@ mix a T3 change silently into a T0–T2 claim.
 1. **Seal the baseline.** Build with the project's own scripts. Record
    reference outputs (goldens, checksums) from the unmodified artifact and
    baseline timings through the proxy path. Serialize: one measurement run
-   at a time on the target hardware.
+   at a time on the target hardware. When the project has a `rune.json`
+   (schema: `docs/rune-config.md` in the RUNE repo), `rune_seal` does this;
+   re-sealing is an explicit re-baseline (`rebaseline=true`), never a
+   silent overwrite.
 2. **Profile for evidence.** Collect hardware-counter profiles of the
    dominant kernels/critical sections. Write down, per candidate class, what
    the counters say for and against it.
 3. **Rank and sweep.** Take the top-ranked class; enumerate candidates;
    for each: edit (language or machine code), rebuild, gate (bit-exact +
-   spill + timing vs incumbent), record. Accept iff all gates pass.
+   spill + timing vs incumbent), record. Accept iff all gates pass. With a
+   `rune.json`, `rune_gate` runs the serialized pass and returns the gates'
+   measurements; `rune_mark` records the decision (and the backport
+   outcome); `rune_ledger` reads the incumbent and history. The tools
+   measure — the acceptance judgment is yours, recorded through the normal
+   verdict path.
 4. **Attempt the backport** for every accepted machine-code edit (T1 rule).
    Re-measure the backport against the machine-code candidate; keep the
-   language spelling if within noise.
+   language spelling if within noise. With the tools: gate the backport and
+   mark the outcome `adopted` or `lossy` — the failed attempt's numbers are
+   what justify a T2 artifact.
 5. **Verify gate-off identity** for any gated change: rebuild with the gate
-   undefined and diff the machine code against the pre-change artifact.
+   undefined and diff the machine code against the pre-change artifact
+   (`rune_dump` gives both sides).
 6. **Ship and document.** The PR carries the language change (or the patch
    pipeline for T2), the updated gate definitions, and the measured table:
    candidate → gates → timings → decision.
@@ -111,5 +122,6 @@ mix a T3 change silently into a T0–T2 claim.
 - Tier boundaries are empirical: a candidate starts at T1 and becomes T2
   only when the backport attempt measurably fails — record the attempt.
 - If no proxy/evaluation path exists, build one before optimizing: goldens
-  + serialized timings + per-config pass/fail. Measuring without it is
-  guesswork with extra steps.
+  + serialized timings + per-config pass/fail, then a `rune.json` naming it
+  (schema: `docs/rune-config.md`) so the RUNE tools and nudges can drive
+  it. Measuring without a sanctioned path is guesswork with extra steps.
